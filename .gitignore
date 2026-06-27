@@ -1,0 +1,46 @@
+# =====================
+# Python cache
+# =====================
+__pycache__/
+*.pyc
+
+# =====================
+# Virtual env
+# =====================
+cfDNA_env/
+venv/
+env/
+
+# Ignore dataset inside src
+src/data/raw/
+src/data/processed/
+
+# keep folder structure if needed
+!src/data/raw/.gitkeep
+!src/data/processed/.gitkeep
+
+# =====================
+# Model outputs
+# =====================
+*.pt
+*.pth
+*.ckpt
+
+# =====================
+# Logs / runs
+# =====================
+*.log
+runs/
+
+# =====================
+# Jupyter
+# =====================
+.ipynb_checkpoints/
+
+# =====================
+# OS / IDE
+# =====================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

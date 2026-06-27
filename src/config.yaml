@@ -1,0 +1,55 @@
+#config
+
+project:
+  name: "cfDNA_cancer_classifier"
+  version: "1.0.0"
+  seed: [1, 14, 32, 42] 
+  artifacts_dir: "./outputs" # Where to save trained models and plots
+
+
+dataset:
+  filepath: "data/processed/patient_features_without_ctdna.csv"
+  target_column: "label"
+  id_column: "patient_id"
+  batch_size: 32
+  num_feature: 6
+  num_classes: 4
+
+
+models:
+  # --- Deep Learning 1: Feedforward Network ---
+  ffn:
+    enabled: true
+    hidden_dims: [24,16,8]
+    activation: "leaky_relu" # Try relu as well sharp corner at 0 
+    dropout_rate: 0.1 # Regularization , Randomly zeroes activations.
+    learning_rate: 0.001
+    weight_decay: 0.01 ## L2 regularization used by AdamW
+    lr_scheduler_factor: 0.5 # New LR = LR × 0.5
+    lr_scheduler_patience: 5 # Reduce LR after 5 epochs with no validation loss improvement
+    early_stopping_patience: 10 # Stop training after 10 epochs with no validation loss improvement
+    epochs: 50
+
+  # --- Deep Learning 2: 1D CNN for Tabular Features ---
+  cnn:
+    enabled: true
+    # We pass the 6 tabular features into parallel channel filters
+    out_channel: [32,64]
+    dropout_rate: 0.15
+    learning_rate: 0.001
+    weight_decay: 0.01 
+    lr_scheduler_factor: 0.5 
+    lr_scheduler_patience: 5 
+    early_stopping_patience: 10 
+    epochs: 50
+
+  # --- Tree-Based Machine Learning: XGBoost ---
+  xgboost:
+    enabled: true
+    max_depth: 5             # Max tree depth (protects against tabular overfitting)
+    learning_rate: 0.05      # Slower learning rate for boost stabilization
+    n_estimators: 300        # Maximum number of boosting rounds
+    subsample: 0.8           # Row subsample percentage per tree iteration
+    colsample_bytree: 0.8    # Feature subsample percentage per tree iteration
+    objective: "multi:softprob" # Outputs probabilities for all 4 classes
+    early_stopping_rounds: 15  # Stop if validation multiclass logloss stalls
