@@ -1,5 +1,6 @@
 #config
 
+
 project:
   name: "cfDNA_cancer_classifier"
   version: "1.0.0"
@@ -12,9 +13,11 @@ dataset:
   target_column: "label"
   id_column: "patient_id"
   batch_size: 32
-  num_feature: 6
+  num_features: 6
   num_classes: 4
 
+model:
+  type: "cnn"   # <-- change this to: ffn | cnn | xgboost
 
 models:
   # --- Deep Learning 1: Feedforward Network ---
@@ -34,7 +37,8 @@ models:
   cnn:
     enabled: true
     # We pass the 6 tabular features into parallel channel filters
-    out_channel: [32,64]
+    out_channels: [32,64] # or kernels 
+    kernel_size: 1
     dropout_rate: 0.15
     learning_rate: 0.001
     weight_decay: 0.01 

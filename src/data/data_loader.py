@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import TensorDataset,DataLoader
 import yaml
 
-def load_data_csv(cfg , seed ):
+def load_and_preprocess_data(cfg , seed ):
 
     filepath = cfg['dataset']['filepath']
     if not os.path.exists(filepath):
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     with open(config_path, "r") as f:
         config_dict = yaml.safe_load(f)
 
-    output = load_data_csv(cfg=config_dict, seed=42)
+    output = load_and_preprocess_data(cfg=config_dict, seed=42)
     
     train_loader, val_loader, test_loader = output["loaders"]
     X_train, y_train, X_val, y_val, X_test, y_test = output["arrays"]
