@@ -9,7 +9,7 @@ project:
 
 
 dataset:
-  filepath: "data/processed/patient_features_without_ctdna.csv"
+  filepath: "src/data/processed/patient_features_without_ctdna.csv"
   target_column: "label"
   id_column: "patient_id"
   batch_size: 32
@@ -18,7 +18,7 @@ dataset:
 
 model:
   type: "cnn"   # <-- change this to: ffn | cnn | xgboost
-
+  save_path: "best_dl_model.pth" 
 models:
   # --- Deep Learning 1: Feedforward Network ---
   ffn:
