@@ -18,7 +18,7 @@ dataset:
 
 model:
   type: "cnn"   # <-- change this to: ffn | cnn | xgboost
-  save_path: "best_dl_model.pth" 
+  save_path: "best_dl_model.pth" # do this save_path: f"{model_type}_best.pth"
 models:
   # --- Deep Learning 1: Feedforward Network ---
   ffn:

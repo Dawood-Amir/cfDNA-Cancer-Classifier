@@ -4,7 +4,7 @@ import torch.nn as nn
 from utils.metrics import compute_metrics
 
 
-def evaluate_dl_model(model, test_loader, device):
+def evaluate_dl_model(model:nn.Module, test_loader, device):
 
     model.eval()
 

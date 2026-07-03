@@ -1,0 +1,140 @@
+First run with cnn and seed 42
+Running Seed : 42
+Using Device : cpu
+Training Class distribution
+0    459
+1    315
+2    374
+3    140
+Name: count, dtype: int64
+Test Class  distribution
+0    99
+1    67
+2    80
+3    30
+Name: count, dtype: int64
+VAL Class  distribution
+0    98
+1    68
+2    80
+3    30
+Name: count, dtype: int64
+Average of each feature for each class
+        n_regions  n_fragments  mean_fragment_length  std_fragment_length  mean_cpg_count  methylation_ratio
+label                                                                                                       
+0      249.782012   684.833841            200.325745            65.655261        2.310989           0.457531
+1      256.988889   750.000000            200.521695            65.726756        2.312459           0.457080
+2      264.192884   750.000000            200.033366            65.679445        2.312137           0.458882
+3      262.210000   750.000000            200.321653            65.783382        2.316507           0.456839
+
+======================================================================
+EPOCH   | TRAIN LOSS | VAL LOSS | DEAD NEURONS LAYER 1 | DEAD NEURONS LAYER 2
+======================================================================
+Epoch 0  | 1.7650     | 1.2387   | 50.33             % | 50.15             %
+Epoch 0: train=1.7650, val=1.2387
+Epoch 1  | 1.2358     | 1.1099   | 50.28             % | 50.37             %
+Epoch 1: train=1.2358, val=1.1099
+Epoch 2  | 1.1697     | 1.0870   | 50.37             % | 50.53             %
+Epoch 2: train=1.1697, val=1.0870
+Epoch 3  | 1.1359     | 1.0765   | 50.26             % | 50.55             %
+Epoch 3: train=1.1359, val=1.0765
+Epoch 4  | 1.1057     | 1.0627   | 50.16             % | 50.65             %
+Epoch 4: train=1.1057, val=1.0627
+Epoch 5  | 1.0828     | 1.0715   | 50.26             % | 50.96             %
+Epoch 5: train=1.0828, val=1.0715
+Epoch 6  | 1.0626     | 1.0524   | 50.31             % | 50.82             %
+Epoch 6: train=1.0626, val=1.0524
+Epoch 7  | 1.0532     | 1.0563   | 50.00             % | 51.01             %
+Epoch 7: train=1.0532, val=1.0563
+Epoch 8  | 1.0882     | 1.0580   | 50.09             % | 50.87             %
+Epoch 8: train=1.0882, val=1.0580
+Epoch 9  | 1.0626     | 1.0557   | 50.17             % | 51.10             %
+Epoch 9: train=1.0626, val=1.0557
+Epoch 10 | 1.0563     | 1.0604   | 50.29             % | 51.39             %
+Epoch 10: train=1.0563, val=1.0604
+Epoch 11 | 1.0446     | 1.0580   | 50.22             % | 51.23             %
+Epoch 11: train=1.0446, val=1.0580
+Epoch 12 | 1.0434     | 1.0539   | 50.40             % | 51.54             %
+Epoch 12: train=1.0434, val=1.0539
+Epoch 13 | 1.0522     | 1.0511   | 50.12             % | 51.24             %
+Epoch 13: train=1.0522, val=1.0511
+Epoch 14 | 1.0319     | 1.0553   | 50.29             % | 51.49             %
+Epoch 14: train=1.0319, val=1.0553
+Epoch 15 | 1.0475     | 1.0527   | 50.28             % | 51.53             %
+Epoch 15: train=1.0475, val=1.0527
+Epoch 16 | 1.0242     | 1.0576   | 50.30             % | 51.56             %
+Epoch 16: train=1.0242, val=1.0576
+Epoch 17 | 1.0439     | 1.0520   | 50.18             % | 51.53             %
+Epoch 17: train=1.0439, val=1.0520
+Epoch 18 | 1.0322     | 1.0506   | 50.44             % | 51.57             %
+Epoch 18: train=1.0322, val=1.0506
+Epoch 19 | 1.0476     | 1.0557   | 50.17             % | 51.50             %
+Epoch 19: train=1.0476, val=1.0557
+Epoch 20 | 1.0316     | 1.0591   | 50.28             % | 51.76             %
+Epoch 20: train=1.0316, val=1.0591
+Epoch 21 | 1.0341     | 1.0512   | 50.39             % | 51.59             %
+Epoch 21: train=1.0341, val=1.0512
+Epoch 22 | 1.0194     | 1.0516   | 50.30             % | 51.72             %
+Epoch 22: train=1.0194, val=1.0516
+Epoch 23 | 1.0282     | 1.0539   | 50.12             % | 51.59             %
+Epoch 23: train=1.0282, val=1.0539
+Epoch 24 | 1.0300     | 1.0598   | 50.36             % | 51.56             %
+Epoch 24: train=1.0300, val=1.0598
+Epoch 25 | 1.0183     | 1.0527   | 50.34             % | 51.60             %
+Epoch 25: train=1.0183, val=1.0527
+Epoch 26 | 1.0262     | 1.0510   | 50.47             % | 51.53             %
+Epoch 26: train=1.0262, val=1.0510
+Epoch 27 | 1.0177     | 1.0527   | 50.32             % | 51.54             %
+Epoch 27: train=1.0177, val=1.0527
+Epoch 28 | 1.0030     | 1.0514   | 50.48             % | 51.55             %
+Epoch 28: train=1.0030, val=1.0514
+Early Stopping triggered at epoch 29! Validation loss stalled.
+
+--- Training Complete. Loading best checkpoint 
+C:\Users\dawoo\miniconda3\envs\cfDNA_env\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+C:\Users\dawoo\miniconda3\envs\cfDNA_env\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+C:\Users\dawoo\miniconda3\envs\cfDNA_env\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+
+========== TEST RESULTS ==========
+Loss : 0.9961
+AUC  : 0.7837
+              precision    recall  f1-score   support
+
+           0       0.80      0.52      0.63        99
+           1       0.43      0.60      0.50        67
+           2       0.53      0.79      0.63        80
+           3       0.00      0.00      0.00        30
+
+    accuracy                           0.56       276
+   macro avg       0.44      0.47      0.44       276
+weighted avg       0.54      0.56      0.53       276
+
+[[51 30 18  0]
+ [ 7 40 20  0]
+ [ 3 14 63  0]
+ [ 3  9 18  0]]
+
+Q&A
+# Almost 50 percent of NEURONS are dead possible soutions ? 
+- Swap Activation Function to LeakyReLU: Replace nn.ReLU() with nn.LeakyReLU(negative_slope=0.01).
+- Update Weight Initialization: Switch the Kaiming initialization non-linearity argument from 'relu' to 'leaky_relu'
+- Make better feature
+
+# Feature means are identical across classes possible solutions?
+- Feature Engineering (Ratios & Variations): Create new interaction features that emphasize subtle margins
+  For example:
+
+    fragment_to_cpg_ratio = n_fragments / (mean_cpg_count + 1e-5)
+
+    region_density = n_fragments / (n_regions + 1e-5)
+
+- Switch from 1D CNN to an FFN will possible work better
+
+- Apply Class Weights or Focal Loss: Class 3 has the lowest support ($140$ training samples compared to 
+  Class 0's $459$). Pass inverse frequency weights into your standard nn.CrossEntropyLoss(weight=class_weights) to 
+  force the network to care about Class 3 mistakes.
+
+  

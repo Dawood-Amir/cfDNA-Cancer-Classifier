@@ -33,13 +33,25 @@ def load_and_preprocess_data(cfg , seed ):
         X_temp , y_temp , test_size = 0.5 , random_state=seed , stratify = y_temp
     ) 
 
+    print("Training Class distribution")
+    print(pd.Series(y_train).value_counts().sort_index())
+
+    print("Test Class  distribution")
+    print(pd.Series(y_test).value_counts().sort_index())
+
+    print("VAL Class  distribution")
+    print(pd.Series(y_val).value_counts().sort_index())
+
+    print("Average of each feature for each class")
+    print(pd.concat([X_raw, y_raw], axis=1).groupby(target_col).mean())
+
     # Standard Scaling (Features MUST be normalized for Neural Networks)
     scaller = StandardScaler()
     X_train = scaller.fit_transform(X_train_raw)
     X_val = scaller.transform(X_val_raw)
     X_test = scaller.transform(X_test_raw)
 
-    # Create PyTorch DataLoaders
+    # Create PyTorch DataLoadersy_test
     train_dataset = TensorDataset(torch.FloatTensor(X_train), torch.LongTensor(y_train))
     val_dataset = TensorDataset(torch.FloatTensor(X_val), torch.LongTensor(y_val))
     test_dataset = TensorDataset(torch.FloatTensor(X_test), torch.LongTensor(y_test))
@@ -73,9 +85,10 @@ if __name__ == "__main__":
 
     output = load_and_preprocess_data(cfg=config_dict, seed=42)
     
+   
+    '''
     train_loader, val_loader, test_loader = output["loaders"]
     X_train, y_train, X_val, y_val, X_test, y_test = output["arrays"]
-    
     print("------- INSPECTING NUMPY ARRAYS (For XGBoost) -------")
     print(f"X_train matrix shape: {X_train.shape} | First row preview: {X_train[0]}")
     print(f"y_train labels shape: {y_train.shape} | First row preview: {y_train[0]}")
@@ -88,3 +101,6 @@ if __name__ == "__main__":
     print(f"Features Batch Tensor Shape: {first_batch_features.shape}") # Should be (32, 6)
     print(f"Targets Batch Tensor Shape:  {first_batch_targets.shape}")  # Should be (32,)
     print(f"First element in batch data:\n{first_batch_features[0]}")
+     
+       '''
+    

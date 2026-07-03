@@ -11,6 +11,10 @@ class CNN(nn.Module):
         k_size =cfg['models']['cnn']['kernel_size'] # This determines how many input steps the kernel looks at when it computes one output value. For example, a kernel size of 3 means it slides over 3 input steps at a time.
         dropout =cfg['models']['cnn']['dropout_rate']
 
+        # Storage for tracking dead neurons per epoch
+        self.relu1_dead_pcts = []
+        self.relu2_dead_pcts = []
+
         #network structure 
         self.conv_block =nn.Sequential(
             #Hidden layer1
@@ -50,11 +54,20 @@ class CNN(nn.Module):
                 nn.init.zeros_(module.bias)
    
     def relu1_hook(self, modul, input, output:torch.Tensor ):
-        print("Relu1:" , (output == 0).float().mean().item())
+        if self.training:
+            pct = (output == 0).float().mean().item()
+            self.relu1_dead_pcts.append(pct)
+
     def relu2_hook(self, modul, input, output:torch.Tensor ):
-        print("Relu2:" , (output == 0).float().mean().item())
+        if(self.training):
+            pct = (output==0).float().mean().item()
+            self.relu2_dead_pcts.append(pct)
 
-
+    def clear_epoch_metrics(self):
+        """Resets the storage lists at the start of a new epoch."""
+        self.relu1_dead_pcts = []
+        self.relu2_dead_pcts = []
+        
     def forward(self,x):
         x=x.unsqueeze(-1)# (B, 6, 1)
         x = self.conv_block(x)# (B, 64, 1)
