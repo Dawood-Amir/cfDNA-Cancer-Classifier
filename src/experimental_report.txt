@@ -1,3 +1,10 @@
+Csv data :
+patient_id,label,n_regions,n_fragments,mean_fragment_length,std_fragment_length,mean_cpg_count,methylation_ratio
+
+X10001,0,264,750,200.82666666666665,66.00977166719754,2.296,0.4730769230767931
+X10004,0,248,683,198.6896046852123,64.91963943576992,2.316251830161054,0.43318729463295913
+....
+
 First run with cnn and seed 42
 Running Seed : 42
 Using Device : cpu
@@ -137,4 +144,91 @@ Q&A
   Class 0's $459$). Pass inverse frequency weights into your standard nn.CrossEntropyLoss(weight=class_weights) to 
   force the network to care about Class 3 mistakes.
 
-  
+  #######################################################################
+  After making 17 features it still didnt perform better even with the ffn the problem by avg the features it become so close to each other.
+
+  result of ffn with 17 feature
+  (cfDNA_env) PS C:\Users\dawoo\OneDrive\Desktop\NN Projects\cfDNA_cancer_classifier> python src/main.py
+
+Running Seed : 10
+Using Device : cpu
+
+======================================================================
+EPOCH   | TRAIN LOSS | VAL LOSS | DEAD NEURONS LAYER 1 | DEAD NEURONS LAYER 2
+======================================================================
+Epoch 0  | 2.0750     | 1.2114   | 0.00              % | 0.00              %
+Epoch 0: train=2.0750, val=1.2114
+Epoch 1  | 1.5167     | 1.0693   | 0.00              % | 0.00              %
+Epoch 1: train=1.5167, val=1.0693
+Epoch 2  | 1.3070     | 1.0631   | 0.00              % | 0.00              %
+Epoch 2: train=1.3070, val=1.0631
+Epoch 3  | 1.2583     | 1.0313   | 0.00              % | 0.00              %
+Epoch 3: train=1.2583, val=1.0313
+Epoch 4  | 1.2192     | 1.0185   | 0.00              % | 0.00              %
+Epoch 4: train=1.2192, val=1.0185
+Epoch 5  | 1.1648     | 1.0146   | 0.00              % | 0.00              %
+Epoch 5: train=1.1648, val=1.0146
+Epoch 6  | 1.1196     | 1.0090   | 0.00              % | 0.00              %
+Epoch 6: train=1.1196, val=1.0090
+Epoch 7  | 1.0863     | 1.0071   | 0.00              % | 0.00              %
+Epoch 7: train=1.0863, val=1.0071
+Epoch 8  | 1.0866     | 1.0077   | 0.00              % | 0.00              %
+Epoch 8: train=1.0866, val=1.0077
+Epoch 9  | 1.0691     | 1.0030   | 0.00              % | 0.00              %
+Epoch 9: train=1.0691, val=1.0030
+Epoch 10 | 1.0467     | 1.0053   | 0.00              % | 0.00              %
+Epoch 10: train=1.0467, val=1.0053
+Epoch 11 | 1.0510     | 1.0006   | 0.00              % | 0.00              %
+Epoch 11: train=1.0510, val=1.0006
+Epoch 12 | 1.0188     | 0.9975   | 0.00              % | 0.00              %
+Epoch 12: train=1.0188, val=0.9975
+Epoch 13 | 1.0169     | 0.9996   | 0.00              % | 0.00              %
+Epoch 13: train=1.0169, val=0.9996
+Epoch 14 | 1.0238     | 1.0010   | 0.00              % | 0.00              %
+Epoch 14: train=1.0238, val=1.0010
+Epoch 15 | 1.0075     | 1.0023   | 0.00              % | 0.00              %
+Epoch 15: train=1.0075, val=1.0023
+Epoch 16 | 1.0000     | 1.0068   | 0.00              % | 0.00              %
+Epoch 16: train=1.0000, val=1.0068
+Epoch 17 | 0.9792     | 1.0084   | 0.00              % | 0.00              %
+Epoch 17: train=0.9792, val=1.0084
+Epoch 18 | 0.9794     | 1.0070   | 0.00              % | 0.00              %
+Epoch 18: train=0.9794, val=1.0070
+Epoch 19 | 0.9675     | 1.0059   | 0.00              % | 0.00              %
+Epoch 19: train=0.9675, val=1.0059
+Epoch 20 | 0.9697     | 1.0033   | 0.00              % | 0.00              %
+Epoch 20: train=0.9697, val=1.0033
+Epoch 21 | 0.9710     | 1.0047   | 0.00              % | 0.00              %
+Epoch 21: train=0.9710, val=1.0047
+Epoch 22 | 0.9520     | 1.0043   | 0.00              % | 0.00              %
+Epoch 22: train=0.9520, val=1.0043
+Early Stopping triggered at epoch 23! Validation loss stalled.
+
+--- Training Complete. Loading best checkpoint 
+
+========== TEST RESULTS ==========
+Loss : 1.0564
+AUC  : 0.7470
+              precision    recall  f1-score   support
+
+           0       0.65      0.56      0.60        98
+           1       0.42      0.43      0.42        68
+           2       0.53      0.78      0.63        80
+           3       0.00      0.00      0.00        30
+
+    accuracy                           0.53       276
+   macro avg       0.40      0.44      0.42       276
+weighted avg       0.49      0.53      0.50       276
+
+[[55 28 14  1]
+ [14 29 22  3]
+ [ 9  6 62  3]
+ [ 6  6 18  0]]
+
+
+ # working on a custom PyTorch Dataset 
+ In this step we'll:
+
+ read the JSON directly
+ compute region-level features
+ return one tensor per patient

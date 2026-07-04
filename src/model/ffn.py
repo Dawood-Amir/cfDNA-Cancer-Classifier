@@ -6,9 +6,9 @@ class FFN(nn.Module):
     def __init__(self, cfg):
         super().__init__()
 
-        in_dim = cfg['dataest']['num_features']#6
+        in_dim = cfg['dataset']['num_features']#17
         h_dims = cfg['models']['ffn']['hidden_dims']#arr
-        out_Dim =cfg['dataest']['num_classes']
+        out_Dim =cfg['dataset']['num_classes']
         drop =cfg['models']['ffn']['dropout_rate']
         self.act_str = cfg['models']['ffn']['activation']
 

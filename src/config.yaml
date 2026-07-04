@@ -9,21 +9,21 @@ project:
 
 
 dataset:
-  filepath: "src/data/processed/patient_features_without_ctdna.csv"
+  filepath: "src/data/processed/patient_features_improved.csv"
   target_column: "label"
   id_column: "patient_id"
   batch_size: 32
-  num_features: 6
+  num_features: 17
   num_classes: 4
 
 model:
-  type: "cnn"   # <-- change this to: ffn | cnn | xgboost
+  type: "ffn"   # <-- change this to: ffn | cnn | xgboost
   save_path: "best_dl_model.pth" # do this save_path: f"{model_type}_best.pth"
 models:
   # --- Deep Learning 1: Feedforward Network ---
   ffn:
     enabled: true
-    hidden_dims: [24,16,8]
+    hidden_dims: [64,32] # Number of neurons in each hidden layer
     activation: "leaky_relu" # Try relu as well sharp corner at 0 
     dropout_rate: 0.1 # Regularization , Randomly zeroes activations.
     learning_rate: 0.001

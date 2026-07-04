@@ -5,5 +5,5 @@ CONFIG_PATH = Path(__file__).parent / "config.yaml"
 
 run_experiment(
     CONFIG_PATH,
-    seed=42
+    seed=10
 )

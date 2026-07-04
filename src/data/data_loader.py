@@ -2,9 +2,13 @@ import pandas as pd
 import os
 from sklearn.model_selection import  train_test_split
 from sklearn.preprocessing import StandardScaler ,LabelEncoder
+from sympy import rf
 import torch
 from torch.utils.data import TensorDataset,DataLoader
 import yaml
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.ensemble import RandomForestClassifier
 
 def load_and_preprocess_data(cfg , seed ):
 
@@ -33,17 +37,37 @@ def load_and_preprocess_data(cfg , seed ):
         X_temp , y_temp , test_size = 0.5 , random_state=seed , stratify = y_temp
     ) 
 
-    print("Training Class distribution")
-    print(pd.Series(y_train).value_counts().sort_index())
+    #plot_pca(X_raw.values , y_encoder) #pca plotting for visualization of the data distribution in 2D space
 
-    print("Test Class  distribution")
-    print(pd.Series(y_test).value_counts().sort_index())
+    # print("Training Class distribution")
+    # print(pd.Series(y_train).value_counts().sort_index())
 
-    print("VAL Class  distribution")
-    print(pd.Series(y_val).value_counts().sort_index())
+    # print("Test Class  distribution")
+    # print(pd.Series(y_test).value_counts().sort_index())
 
-    print("Average of each feature for each class")
-    print(pd.concat([X_raw, y_raw], axis=1).groupby(target_col).mean())
+    # print("VAL Class  distribution")
+    # print(pd.Series(y_val).value_counts().sort_index())
+
+    # print("Average of each feature for each class")
+    # #print(pd.concat([X_raw, y_raw], axis=1).groupby(target_col).mean())
+    # grouped = pd.concat([X_raw, y_raw], axis=1).groupby(target_col).mean()
+
+    # print(grouped.to_string())
+    
+
+    # rf = RandomForestClassifier(random_state=42)
+    # rf.fit(X_raw, y_raw)
+
+    # feature_names = X_raw.columns
+
+    # print("\nFeature Importances")
+    # print("-" * 40)
+
+    # for name, score in sorted(zip(feature_names, rf.feature_importances_),
+    #                         key=lambda x: x[1],
+    #                         reverse=True):
+    #     print(f"{name:30s} {score:.4f}")
+
 
     # Standard Scaling (Features MUST be normalized for Neural Networks)
     scaller = StandardScaler()
@@ -70,6 +94,24 @@ def load_and_preprocess_data(cfg , seed ):
         "label_encoder": encoder
     }
 
+
+
+
+def plot_pca(X, y):
+    pca = PCA(n_components=2)
+    X_pca = pca.fit_transform(X)
+
+    plt.figure(figsize=(6,5))
+
+    for cls in sorted(set(y)):
+        idx = y == cls
+        plt.scatter(X_pca[idx, 0], X_pca[idx, 1], label=f"Class {cls}", alpha=0.6)
+
+    plt.legend()
+    plt.title("PCA of cfDNA Features")
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
+    plt.show()
 #==========================================
 # CALL AND INSPECT THE OUTPUT
 # ==========================================
