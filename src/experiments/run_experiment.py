@@ -1,14 +1,17 @@
 import yaml
 import torch
 
-from data.data_loader import load_and_preprocess_data
+from imblearn.over_sampling import SMOTE
+
+from data.balanced_data import balanced_data
 
 from trainers.train_dl import (
     build_model,
     train_dl_model
 )
+from trainers.train_xgb import train_xgboost_model
 
-from trainers.evaluate import evaluate_dl_model
+from trainers.evaluate import evaluate_dl_model , evaluate_xgboost_model
 
 from utils.seed_utils import set_seed
 
@@ -24,27 +27,28 @@ def run_experiment(config_path, seed):
         config = yaml.safe_load(f)
 
     set_seed(seed)
-
     print(f"\nRunning Seed : {seed}")
+    
+    # Call your new function to get clean, hybrid balanced objects
+    data = balanced_data(config, seed)
+    model_type = config["model"]["type"]
+    print(f"\nModel Type : {model_type}")
 
-    print(f"Using Device : {device}")
+    if model_type == "xgboost":
+        print("Using Device : CPU/Native (XGBoost)")
+        X_train, y_train, X_val, y_val, X_test, y_test = data["arrays"]
+        
+        model = build_model(config, device=None)
+        model = train_xgboost_model(model, config, X_train, y_train, X_val, y_val)
+        evaluate_xgboost_model(model, X_test, y_test)
 
-    data = load_and_preprocess_data(config,seed=seed)
+    else:
+        print(f"Using Device : {device}")
+        train_loader, val_loader, test_loader = data["loaders"]
 
-    train_loader, val_loader, test_loader = data["loaders"]
-
-    model = build_model(config, device)
-
-    model = train_dl_model(
-        model=model,
-        config=config,
-        device=device,
-        train_loader=train_loader,
-        val_loader=val_loader
-    )
-
-    evaluate_dl_model(
-        model,
-        test_loader,
-        device
-    )
+        model = build_model(config, device)
+        model, class_weights_tensor = train_dl_model(
+            model=model, config=config, device=device,
+            train_loader=train_loader, val_loader=val_loader
+        )
+        evaluate_dl_model(model, test_loader, device, class_weights_tensor=class_weights_tensor)

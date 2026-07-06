@@ -7,17 +7,41 @@ from model.ffn import FFN
 from model.cnn import CNN
 from utils.seed_utils import set_seed
 from data.data_loader import load_and_preprocess_data
-
-
+import xgboost as xgb
+import os
+from sklearn.utils.class_weight import compute_class_weight
+import trainers.focal_loss as focal_loss
 def train_dl_model( model: nn.Module, config:yaml, device ,train_loader , val_loader  ):
     
     model_cfg = config["models"][config["model"]["type"]]
+    '''
+    # Class imbalance handling: Gather all labels
+    y_train = []
+    for _, y in train_loader:
+        y_train.extend(y.numpy())
+    y_train = np.array(y_train)
+    
+    # ─── UPDATED: SMOOTHED SQUARE ROOT CLASS WEIGHTS ───
+    # Count occurrences of each class
+    class_counts = np.bincount(y_train)
+    total_samples = len(y_train)
+    
+    # Calculate smoothed weights using square root mapping
+    weights = np.sqrt(total_samples / class_counts)
+    
+    # Normalize weights so their average remains 1.0
+    weights = weights / np.mean(weights)
+    
+    # Convert to PyTorch tensor
+    class_weights_tensor = torch.tensor(weights, dtype=torch.float32).to(device)
 
-    #fetch data channels
+    '''
+    
+    class_weights_tensor = None # remove if going back to class weights for focal loss. 
+    # Loss function with adjusted weights
+    criterion = focal_loss.PyTorchFocalLoss(weight=class_weights_tensor, gamma=2.0)
 
-    #lossfunc
-    criterion = nn.CrossEntropyLoss()
-
+    #criterion = nn.CrossEntropyLoss()
     #optimization
     optimizer  = optim.AdamW(
         model.parameters() ,lr=model_cfg['learning_rate'],
@@ -35,7 +59,7 @@ def train_dl_model( model: nn.Module, config:yaml, device ,train_loader , val_lo
 
     best_val_loss =float('inf') 
     patience_counter = 0
-    save_path = f"{config['model']['type']}_{config['model']['save_path']}"
+
 
     print("\n" + "="*70)
     print(f"{'EPOCH':<7} | {'TRAIN LOSS':<10} | {'VAL LOSS':<8} | {'DEAD NEURONS LAYER 1':<20} | {'DEAD NEURONS LAYER 2':<20}")
@@ -92,6 +116,11 @@ def train_dl_model( model: nn.Module, config:yaml, device ,train_loader , val_lo
             patience_counter =0 
             # Save the absolute best weights found so far (Checkpointing)
             
+            artifacts_dir = config["project"].get("artifacts_dir", "./outputs")
+            os.makedirs(artifacts_dir, exist_ok=True)
+            save_path = os.path.join(artifacts_dir, f"{config['model']['type']}_{config['model']['save_path']}")
+            #save_path = f"{config['model']['type']}_{config['model']['save_path']}"
+
             torch.save(model.state_dict(), save_path)
         else:
             patience_counter += 1 # No improvement
@@ -102,7 +131,7 @@ def train_dl_model( model: nn.Module, config:yaml, device ,train_loader , val_lo
     print("\n--- Training Complete. Loading best checkpoint ")
     model.load_state_dict(torch.load(save_path))
 
-    return model
+    return model ,class_weights_tensor
 
 
 
@@ -116,7 +145,20 @@ def build_model(config, device):
         return CNN(config).to(device)
 
     elif model_type == "xgboost":
-        return None  # handled separately
+            # Initialize the XGBoost Classifier using hyperparameters from config
+            xgb_cfg = config["models"]["xgboost"]
+            return xgb.XGBClassifier(
+                max_depth=xgb_cfg["max_depth"],
+                learning_rate=xgb_cfg["learning_rate"],
+                n_estimators=xgb_cfg["n_estimators"],
+                subsample=xgb_cfg["subsample"],
+                colsample_bytree=xgb_cfg["colsample_bytree"],
+                objective=None,  # ◄ CHANGED: Set to None so our Custom Focal Loss can take over smoothly
+                early_stopping_rounds=xgb_cfg["early_stopping_rounds"],
+                max_delta_step=xgb_cfg.get("max_delta_step", 0), 
+                # ◄ REMOVED: eval_metric="mlogloss" (Custom objectives manage raw margins directly)
+                random_state=config["project"]["seed"][0]
+            )
 
     else:
         raise ValueError(f"Unknown model type: {model_type}")

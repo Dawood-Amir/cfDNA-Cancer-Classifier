@@ -130,8 +130,8 @@ class RegionDataset(Dataset):
 
 
             #Region-level statistics
-            lengths = np.asarray(fragment_lengths)
-            cpg = np.asarray(cpg_counts)    
+            lengths = np.asarray(fragment_lengths , dtype=np.float32)
+            cpg = np.asarray(cpg_counts,dtype=np.float32)    
 
             total_tokens = methylated + unmethylated
 
@@ -186,17 +186,32 @@ class RegionDataset(Dataset):
     
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__": #removed it for now 
 
-    dataset = RegionDataset("src/data/raw/synthetic_cfdna_output")
+    def test():
+            
+        dataset = RegionDataset(base_dir="src/data/raw/synthetic_cfdna_output")
 
-    X, y = dataset[900]
+        print("Number of patients:", len(dataset))
 
-    print("Patient tensor shape:", X.shape)
-    print("Label:", y)
+        for i in range(5):
+            region_tensor, label = dataset[i]
+            print(f"Patient {i}:")
+            print("Region tensor shape:", region_tensor.shape)
+            print("Label:", label)
+            print()
 
-    print()
+        #dataset = RegionDataset("src/data/raw/synthetic_cfdna_output")
+   
+        X, y = dataset[900]
 
-    print("First region:")
+        print("Patient tensor shape:", X.shape)
+        print("Label:", y)
 
-    print(X[0])
+        print()
+
+        print("First region:")
+
+        print(X[0])
+
+

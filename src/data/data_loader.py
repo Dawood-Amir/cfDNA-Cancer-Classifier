@@ -22,7 +22,9 @@ def load_and_preprocess_data(cfg , seed ):
     target_col = cfg['dataset']['target_column']
     id_col = cfg['dataset']['id_column']    
 
-    X_raw = df.drop(columns=[id_col,target_col]) #6 feature
+    #X_raw = df.drop(columns=[id_col,target_col , "enriched_ctdna_fraction"]) #6 feature
+    X_raw = df.drop(columns=[id_col,target_col ]) #6 feature
+
     y_raw = df[target_col]# 4 labels in total 
 
 
