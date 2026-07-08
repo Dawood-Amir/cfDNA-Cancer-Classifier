@@ -48,42 +48,6 @@ Epoch 3: train=1.1359, val=1.0765
 Epoch 4  | 1.1057     | 1.0627   | 50.16             % | 50.65             %
 Epoch 4: train=1.1057, val=1.0627
 Epoch 5  | 1.0828     | 1.0715   | 50.26             % | 50.96             %
-Epoch 5: train=1.0828, val=1.0715
-Epoch 6  | 1.0626     | 1.0524   | 50.31             % | 50.82             %
-Epoch 6: train=1.0626, val=1.0524
-Epoch 7  | 1.0532     | 1.0563   | 50.00             % | 51.01             %
-Epoch 7: train=1.0532, val=1.0563
-Epoch 8  | 1.0882     | 1.0580   | 50.09             % | 50.87             %
-Epoch 8: train=1.0882, val=1.0580
-Epoch 9  | 1.0626     | 1.0557   | 50.17             % | 51.10             %
-Epoch 9: train=1.0626, val=1.0557
-Epoch 10 | 1.0563     | 1.0604   | 50.29             % | 51.39             %
-Epoch 10: train=1.0563, val=1.0604
-Epoch 11 | 1.0446     | 1.0580   | 50.22             % | 51.23             %
-Epoch 11: train=1.0446, val=1.0580
-Epoch 12 | 1.0434     | 1.0539   | 50.40             % | 51.54             %
-Epoch 12: train=1.0434, val=1.0539
-Epoch 13 | 1.0522     | 1.0511   | 50.12             % | 51.24             %
-Epoch 13: train=1.0522, val=1.0511
-Epoch 14 | 1.0319     | 1.0553   | 50.29             % | 51.49             %
-Epoch 14: train=1.0319, val=1.0553
-Epoch 15 | 1.0475     | 1.0527   | 50.28             % | 51.53             %
-Epoch 15: train=1.0475, val=1.0527
-Epoch 16 | 1.0242     | 1.0576   | 50.30             % | 51.56             %
-Epoch 16: train=1.0242, val=1.0576
-Epoch 17 | 1.0439     | 1.0520   | 50.18             % | 51.53             %
-Epoch 17: train=1.0439, val=1.0520
-Epoch 18 | 1.0322     | 1.0506   | 50.44             % | 51.57             %
-Epoch 18: train=1.0322, val=1.0506
-Epoch 19 | 1.0476     | 1.0557   | 50.17             % | 51.50             %
-Epoch 19: train=1.0476, val=1.0557
-Epoch 20 | 1.0316     | 1.0591   | 50.28             % | 51.76             %
-Epoch 20: train=1.0316, val=1.0591
-Epoch 21 | 1.0341     | 1.0512   | 50.39             % | 51.59             %
-Epoch 21: train=1.0341, val=1.0512
-Epoch 22 | 1.0194     | 1.0516   | 50.30             % | 51.72             %
-Epoch 22: train=1.0194, val=1.0516
-Epoch 23 | 1.0282     | 1.0539   | 50.12             % | 51.59             %
 Epoch 23: train=1.0282, val=1.0539
 Epoch 24 | 1.0300     | 1.0598   | 50.36             % | 51.56             %
 Epoch 24: train=1.0300, val=1.0598
@@ -98,12 +62,6 @@ Epoch 28: train=1.0030, val=1.0514
 Early Stopping triggered at epoch 29! Validation loss stalled.
 
 --- Training Complete. Loading best checkpoint 
-C:\Users\dawoo\miniconda3\envs\cfDNA_env\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
-C:\Users\dawoo\miniconda3\envs\cfDNA_env\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
-C:\Users\dawoo\miniconda3\envs\cfDNA_env\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
 
 ========== TEST RESULTS ==========
 Loss : 0.9961
@@ -140,7 +98,7 @@ Q&A
 
 - Switch from 1D CNN to an FFN will possible work better
 
-- Apply Class Weights or Focal Loss: Class 3 has the lowest support ($140$ training samples compared to 
+- Apply Class Weights or Focal Loss: Class 3 has the lowest support (140 training samples compared to 
   Class 0's $459$). Pass inverse frequency weights into your standard nn.CrossEntropyLoss(weight=class_weights) to 
   force the network to care about Class 3 mistakes.
 

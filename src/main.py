@@ -1,28 +1,62 @@
-from experiments.run_experiment import run_experiment
+
 from pathlib import Path
+import argparse
+import os
+from pathlib import Path
+import yaml
+from experiments.run_experiment import run_experiment
 
 CONFIG_PATH = Path(__file__).parent / "config.yaml"
 
-run_experiment(
-    CONFIG_PATH,
-    seed=10
-)
 
-# import pandas as pd
+def main():
+    # 1. Setup CLI Argument Parser
+    parser = argparse.ArgumentParser(
+        description="Run cfDNA Cancer Classifier Baseline Experiments."
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        required=True,
+        choices=["ffn", "cnn", "xgboost" ,"resffn"],
+        help="Specify the baseline architecture to train and evaluate.",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed initialization for reproducibility.",
+    )
 
-# # Load the feature set you just generated
-# df = pd.read_csv("src/data/processed/patient_features_improved2.csv")
+    args = parser.parse_args()
 
-# # Print the mean value of key features for each class
-# features_to_check = [
-#     "mean_fragment_length", 
-#     "short_fragment_ratio", 
-#     "methylation_ratio", 
-#     "motif_CCCA"
-# ]
+    # 2. Open and dynamically update the YAML configuration
+    with open(CONFIG_PATH, "r") as f:
+        config = yaml.safe_load(f)
 
-# print("========== DATASET DIAGNOSTIC CRUISE ==========")
-# for feat in features_to_check:
-#     if feat in df.columns:
-#         print(f"\nAverage {feat} per class:")
-#         print(df.groupby("label")[feat].mean())
+    # Override the model type with the command line argument
+    config["model"]["type"] = args.model
+
+    # Save the temporary modified configuration so run_experiment reads the target choice
+    with open(CONFIG_PATH, "w") as f:
+        yaml.safe_dump(config, f)
+
+    print(f" Initializing pipeline run...")
+    print(f" Selected Architecture: {args.model.upper()}")
+    print(f" Execution Seed      : {args.seed}")
+
+    # 3. Launch the standardized experiment loop
+    run_experiment(str(CONFIG_PATH), seed=args.seed)
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+# CONFIG_PATH = Path(__file__).parent / "config.yaml"
+
+# run_experiment(
+#     CONFIG_PATH,
+#     seed=10
+# )

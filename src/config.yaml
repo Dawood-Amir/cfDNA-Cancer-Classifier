@@ -1,60 +1,78 @@
-#config
-
-
-project:
-  name: "cfDNA_cancer_classifier"
-  version: "1.0.0"
-  seed: [1, 14, 32, 42] 
-  artifacts_dir: "./outputs" # Where to save trained models and plots
-
-
 dataset:
-  filepath: "src/data/processed/patient_features_improved2.csv"
-  target_column: "label"
-  id_column: "patient_id"
   batch_size: 32
-  num_features: 66
+  filepath: src/data/processed/patient_features.csv
+  id_column: patient_id
   num_classes: 4
-
+  num_features: 16
+  target_column: label
 model:
-  type: "xgboost"   # <-- change this to: ffn | cnn | xgboost
-  save_path: "best_model.pth" # do this save_path: f"{model_type}_best.pth"
+  save_path: best_model.pth
+  type: resffn
 models:
-  # --- Deep Learning 1: Feedforward Network ---
-  ffn:
-    enabled: true
-    hidden_dims: [128, 64, 32] # Number of neurons in each hidden layer
-    activation: "leaky_relu" # Try relu as well sharp corner at 0 
-    dropout_rate: 0.1 # Regularization , Randomly zeroes activations.
-    learning_rate: 0.001
-    weight_decay: 0.01 ## L2 regularization used by AdamW
-    lr_scheduler_factor: 0.5 # New LR = LR × 0.5
-    lr_scheduler_patience: 5 # Reduce LR after 5 epochs with no validation loss improvement
-    early_stopping_patience: 20 # Stop training after 20 epochs with no validation loss improvement
-    epochs: 50
-
-  # --- Deep Learning 2: 1D CNN for Tabular Features ---
   cnn:
-    enabled: true
-    # We pass the 6 tabular features into parallel channel filters
-    out_channels: [64, 128] 
-    kernel_size: 3
     dropout_rate: 0.45
-    learning_rate: 0.001
-    weight_decay: 0.02
-    lr_scheduler_factor: 0.5 
-    lr_scheduler_patience: 7 
-    early_stopping_patience: 20 
-    epochs: 50
-
-  # --- Tree-Based Machine Learning: XGBoost ---
-  xgboost:
+    early_stopping_patience: 20
     enabled: true
-    max_depth: 5             # Keeps trees shallow so they can't memorize noise
-    learning_rate: 0.03       # Slow, smooth gradient steps
-    n_estimators: 600         # Raised max trees since early stopping will cap it anyway
-    subsample: 0.65           # Forces trees to look at only 65% of rows (Regularization)
-    colsample_bytree: 0.65    # Forces trees to look at only 65% of features per split
-    objective: "multi:softprob"
-    early_stopping_rounds: 30 # Stops training when validation multi-logloss stalls
-    max_delta_step: 1         # Keeps updates stable for highly imbalanced target sets
+    epochs: 50
+    kernel_size: 3
+    learning_rate: 0.001
+    loss_type: label_smoothing
+    lr_scheduler_factor: 0.5
+    lr_scheduler_patience: 7
+    out_channels:
+    - 32
+    - 64
+    smoothing: 0.1
+    weight_decay: 0.02
+  ffn:
+    activation: leaky_relu
+    dropout_rate: 0.15
+    early_stopping_patience: 20
+    enabled: true
+    epochs: 50
+    hidden_dim: 32
+    hidden_dims:
+    - 24
+    - 8
+    learning_rate: 0.001
+    loss_type: label_smoothing
+    lr_scheduler_factor: 0.5
+    lr_scheduler_patience: 7
+    resffn: null
+    smoothing: 0.1
+    weight_decay: 0.01
+  resffn:
+    activation: leaky_relu
+    dropout_rate: 0.15
+    early_stopping_patience: 20
+    epochs: 50
+    hidden_dim: 32
+    learning_rate: 0.001
+    loss_type: label_smoothing
+    lr_scheduler_factor: 0.5
+    lr_scheduler_patience: 7
+    smoothing: 0.1
+    weight_decay: 0.01
+  xgboost:
+    colsample_bytree: 0.65
+    early_stopping_rounds: 30
+    enabled: true
+    learning_rate: 0.03
+    max_delta_step: 1
+    max_depth: 5
+    mi_k: 10
+    mi_select: true
+    n_estimators: 600
+    n_trials: 30
+    objective: multi:softprob
+    subsample: 0.65
+    tune: true
+project:
+  artifacts_dir: ./outputs
+  name: cfDNA_cancer_classifier
+  seed:
+  - 1
+  - 10
+  - 32
+  - 42
+  version: 1.0.0
