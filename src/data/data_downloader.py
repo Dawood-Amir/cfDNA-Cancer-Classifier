@@ -4,7 +4,6 @@ import shutil
 
 dataset_id = "kwarkp/model-5-cfdna-ctdna-dataset"
 
-# Get project root (cfDNA_cancer_classifier/)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 dst = os.path.join(BASE_DIR, "data", "raw")

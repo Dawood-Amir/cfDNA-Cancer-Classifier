@@ -1,13 +1,13 @@
 dataset:
   batch_size: 32
-  filepath: src/data/processed/patient_features.csv
+  filepath: src/data/processed/patient_features_without_ctdna.csv
   id_column: patient_id
   num_classes: 4
-  num_features: 16
+  num_features: 6
   target_column: label
 model:
   save_path: best_model.pth
-  type: resffn
+  type: xgboost
 models:
   cnn:
     dropout_rate: 0.45
